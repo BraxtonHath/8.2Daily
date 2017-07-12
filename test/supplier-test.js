@@ -9,10 +9,10 @@ describe('Totalcash-supply-test', function() {
 
   beforeEach(function(done) {
     Supplier.insertMany([
-      {drink: 'Gatoraid', quantity: 7, cost: 4},
-      {drink: 'Dr.Pepper', quantity: 43, cost: 50},
-      {drink: 'Mr.Pib', quantity: 14, cost: 4},
-      {drink: 'Starbucks', quantity: 5, cost: 64}
+      {drink: 'Gatoraid', quantity: 7, totalCost: 4},
+      {drink: 'Dr.Pepper', quantity: 43, totalCost: 50},
+      {drink: 'Mr.Pib', quantity: 14, totalCost: 4},
+      {drink: 'Starbucks', quantity: 5, totalCost: 64}
     ]).then(done());
   });
 
@@ -36,10 +36,10 @@ describe('add a drink-supply-test', function() {
 
   beforeEach(function(done) {
     Supplier.insertMany([
-      {drink: 'Gatoraid', quantity: 7, cost: 4},
-      {drink: 'Dr.Pepper', quantity: 43, cost: 50},
-      {drink: 'Mr.Pib', quantity: 14, cost: 4},
-      {drink: 'Starbucks', quantity: 5, cost: 64}
+      {drink: 'Gatoraid', quantity: 7, totalCost: 4},
+      {drink: 'Dr.Pepper', quantity: 43, totalCost: 50},
+      {drink: 'Mr.Pib', quantity: 14, totalCost: 4},
+      {drink: 'Starbucks', quantity: 5, totalCost: 64}
     ]).then(done());
   });
 
@@ -65,10 +65,10 @@ describe('Purchases-supply-test', function() {
 
   beforeEach(function(done) {
     Supplier.insertMany([
-      {drink: 'Gatoraid', quantity: 7, cost: 4},
-      {drink: 'Dr.Pepper', quantity: 43, cost: 50},
-      {drink: 'Mr.Pib', quantity: 14, cost: 4},
-      {drink: 'Starbucks', quantity: 5, cost: 64}
+      {drink: 'Gatoraid', quantity: 7, totalCost: 4},
+      {drink: 'Dr.Pepper', quantity: 43, totalCost: 50},
+      {drink: 'Mr.Pib', quantity: 14, totalCost: 4},
+      {drink: 'Starbucks', quantity: 5, totalCost: 64}
     ]).then(done());
   });
 

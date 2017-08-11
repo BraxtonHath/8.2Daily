@@ -18,43 +18,103 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 mongoose.connect(config.mongoURL);
 
-//grabbing all the info from products
+
+
+
+
 app.get('/api/product/drinks', function(req, res) {
-  Product.find({}).then(function(products) {
-    res.json(products);
-  });
-});
-
-//grabbing the info from supplier
-app.get('/api/supplier/purchases', function(req, res) {
-  Supplier.find({}).then(function(suppliers) {
-    res.json(suppliers);
+  Product.find({}).then(function(drink) {
+    // console.log(drink);
+    res.json(drink);
   });
 });
 
 
-// gets the total cost from supplier
-app.get('/api/supplier/cash', function(req, res) {
+
+
+
+
+app.post('/api/Product/drinks/Gatoraid/purchases', function(req, res) {
+  var amountBought = 1;
+  var amountPaid = 100;
+  var message = '';
+
+  Product.findOne({drink: 'Gatoraid'}).then(function(result) {
+    var totalPrice = amountBought * result.cost;
+    if (!result || result.quantity === 0){
+      message = 'no more';
+      return message;
+    } else if (amountBought > result.quantity) {
+      message = 'not enough';
+      return message;
+    } else {
+      result.quantity -= amountBought;
+      result.save().then(function(newDrink) {
+        if (amountPaid > totalPrice){
+          var change = amountPaid - totalPrice;
+          message = 'Your change is ' + change;
+          return message;
+        } else if (amountPaid < totalPrice) {
+          var owed = totalPrice - amountPaid;
+          message = 'You still need ' + owed;
+          return message;
+        } else if (amountPaid === totalPrice) {
+          message = 'paid correct ammount';
+          return message;
+        }
+        res.status(201).json({});
+      });
+    }
+  });
+});
+
+
+
+app.get('/api/suppliers/cash', function(req, res) {
   Supplier.find({}).then(function(drinks) {
+    // console.log(JSON.stringify(drinks, null, '\t'));
     var total = 0;
+
     for(var i = 0; i < drinks.length; i++) {
       total += drinks[i].totalCost;
     }
-    res.json(total);
+
+    res.json({total: total});
   });
 });
 
 
-//post the newproduct and saving it in the database
-app.post('/api/supplier/drinks', function(req, res) {
-  const newproduct = new Product(req.body).save().then(function(drink) {
+
+app.get('/api/suppliers/purchases', function(req, res) {
+  Supplier.find({}).then(function(supplier) {
+    // console.log(JSON.stringify(supplier, null, '\t'));
+    res.json(supplier);
+  });
+});
+
+
+app.post('/api/suppliers/drinks', function(req, res) {
+  const newSupplier = new Supplier(req.body).save().then(function(drink) {
+    // console.log(JSON.stringify(drink, null, '\t'));
     res.status(201).json({});
   });
 });
 
 
-module.exports = app;
+
+app.patch('/api/suppliers/drinks/:drinkId', function(req, res) {
+  var id = "Gatoraid";
+  Supplier.update({drinks: id}, {$set: {quantity: 7}}).then(function(drinks) {
+    // console.log(JSON.stringify(id, null, '\t'));
+    res.status(200).json({});
+  });
+});
+
+
+
 
 app.listen(3000, function() {
-  console.log('Successfully created express application');
+  console.log('');
 });
+
+module.exports = app;

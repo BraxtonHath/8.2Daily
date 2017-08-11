@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const supplierSchema = new mongoose.Schema({
   drink: String,
@@ -10,6 +10,6 @@ const supplierSchema = new mongoose.Schema({
   }
 });
 
-const Supplier = mongoose.model('Supplier', supplierSchema);
+const Supplier = mongoose.model("Supplier", supplierSchema);
 
 module.exports = Supplier;

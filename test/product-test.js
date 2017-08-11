@@ -54,7 +54,7 @@ describe('### BUY ITEM GET CHANGE ###', function() {
 
   it('pay and get correct change', function(done) {
     request(app)
-    .post('/api/Product/drinks/Gatoraid/purchases')
+    .post('/api/Product/drinks/0/purchases')
     .send({})
     .expect(201)
     .expect(function(res) {
@@ -65,7 +65,7 @@ describe('### BUY ITEM GET CHANGE ###', function() {
 
   it('choose an item', function(done) {
     request(app)
-    .post('/api/Product/drinks/Gatoraid/purchases')
+    .post('/api/Product/drinks/0/purchases')
     .send({})
     .expect(201)
     .expect(function(res) {

@@ -22,8 +22,8 @@ mongoose.connect(config.mongoURL);
 
 
 
-app.get("/api/Product/drink", function(req, res) {
-  Product.find({}).then(function(products) {
+app.get("/api/Product/drinks", function(req, res) {
+  Product.find({}).then(function(drinks) {
     res.json(drinks);
   });
 });
@@ -102,8 +102,7 @@ app.post("/api/suppliers/drinks", function(req, res) {
 
 
 app.patch("/api/suppliers/drinks/:drinkId", function(req, res) {
-  var id = drinkId;
-  Supplier.update({drinks: id}, {$set: {quantity: 7}}).then(function(drinks) {
+  Supplier.update({drink: req.params.drinkId}).then(function(drinks) {
     // console.log(JSON.stringify(id, null, "\t"));
     res.status(200).json({});
   });

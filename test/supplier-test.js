@@ -52,15 +52,15 @@ describe('###### DRINKS STOCKED #######', function() {
   });
 
   it('checks numbers ', function(done) {
-    var sampleItem = {item: 'Gatoraid', quantity: 7, cost: 4};
+    var sampleItem = {drink: 'RedGatoraid', quantity: 7, totalCost: 4};
     request(app)
     .patch('/api/suppliers/drinks/' + sampleItem._id)
     .send({})
     .expect(200)
     .expect(function(res) {
-      expect(sampleItem.item).to.equal('Gatoraid');
+      expect(sampleItem.drink).to.equal('RedGatoraid');
       expect(sampleItem.quantity).to.equal(7);
-      expect(sampleItem.cost).to.equal(4);
+      expect(sampleItem.totalCost).to.equal(4);
     }).end(done);
   });
 });

@@ -34,37 +34,53 @@ app.get("/api/Product/drinks", function(req, res) {
 
 
 app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
-  var amountBought = 1;
-  var amountPaid = 100;
+  var bought = 1;
+  var paid = 100;
   var message = "";
 
-  Product.findOne({drink: req.params.drinkId}).then(function(result) {
-    var totalPrice = amountBought * result.cost;
+  Product.findOne({drink: "Gatoraid"}).then(function(result) {
+    var total = bought * result.cost;
+
+
     if (!result || result.quantity === 0){
-      message = "no more";
+      message = "Error: no more drinks of this kind";
       return message;
-    } else if (amountBought > result.quantity) {
-      message = "not enough";
+
+
+    } else if (bought > result.quantity) {
+      message = "Error: need more money to buy";
       return message;
+
+
     } else {
-      result.quantity -= amountBought;
+      result.quantity -= bought;
       result.save().then(function(newDrink) {
-        if (amountPaid > totalPrice){
-          var change = amountPaid - totalPrice;
-          message = "Your change is " + change;
-          return message;
-        } else if (amountPaid < totalPrice) {
-          var owed = totalPrice - amountPaid;
-          message = "You still need " + owed;
-          return message;
-        } else if (amountPaid === totalPrice) {
-          message = "paid correct ammount";
-          return message;
-        }
-        res.status(201).json({});
+
+        const newSupplier = new Supplier({drink: newDrink.drink, quantity: bought, totalCost: total}).save().then(function() {
+
+
+          if (paid > total){
+            var change = paid - total;
+            message = "Change: " + change;
+            return message;
+
+
+          } else if (paid < total) {
+            var left = total - paid;
+            message = "owed: " + left;
+            return message;
+
+
+          } else if (paid === total) {
+            message = "correct";
+            return message;
+          }
+          res.status(201).json({});
+        });
       });
     }
   });
+
 });
 
 

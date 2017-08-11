@@ -6,31 +6,6 @@ const app = require('../app');
 
 
 
-describe('####### TOTAL AMMOUNT OF MONEY #######', function() {
-
-  beforeEach(function(done) {
-    Supplier.insertMany([
-      {drink: 'Gatoraid', quantity: 7, totalCost: 4},
-      {drink: 'Dr.Pepper', quantity: 43, totalCost: 50},
-      {drink: 'Mr.Pib', quantity: 14, totalCost: 4},
-      {drink: 'Starbucks', quantity: 5, totalCost: 64}
-    ]).then(done());
-  });
-
-  afterEach(function(done) {
-    Supplier.deleteMany({}).then(done());
-  });
-
-  it('total Function', function(done) {
-    request(app)
-    .get('/api/suppliers/cash')
-    .expect(200)
-    .expect(function(res) {
-      expect(res.body.total).to.equal(122);
-    }).end(done);
-  });
-});
-
 
 
 
@@ -65,6 +40,33 @@ describe('###### DRINKS STOCKED #######', function() {
   });
 });
 
+
+
+
+describe('####### TOTAL AMMOUNT OF MONEY #######', function() {
+
+  beforeEach(function(done) {
+    Supplier.insertMany([
+      {drink: 'Gatoraid', quantity: 7, totalCost: 4},
+      {drink: 'Dr.Pepper', quantity: 43, totalCost: 50},
+      {drink: 'Mr.Pib', quantity: 14, totalCost: 4},
+      {drink: 'Starbucks', quantity: 5, totalCost: 64}
+    ]).then(done());
+  });
+
+  afterEach(function(done) {
+    Supplier.deleteMany({}).then(done());
+  });
+
+  it('total Function', function(done) {
+    request(app)
+    .get('/api/suppliers/cash')
+    .expect(200)
+    .expect(function(res) {
+      expect(res.body.total).to.equal(122);
+    }).end(done);
+  });
+});
 
 
 

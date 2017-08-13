@@ -10,10 +10,10 @@ describe('### BUY ITEM GET CHANGE ###', function() {
 
   beforeEach(function(done) {
     Product.insertMany([
-      {drink: 'Gatoraid', quantity: 7, cost: 5},
-      {drink: 'Dr.Pepper', quantity: 43, cost: 50},
-      {drink: 'Mr.Pib', quantity: 14, cost: 4},
-      {drink: 'Starbucks', quantity: 5, cost: 64}
+      {name: 'Gatoraid', quantity: 7, cost: 5},
+      {name: 'Dr.Pepper', quantity: 43, cost: 50},
+      {name: 'Mr.Pib', quantity: 14, cost: 4},
+      {name: 'Starbucks', quantity: 5, cost: 64}
     ]).then(done());
   });
 
@@ -27,7 +27,7 @@ describe('### BUY ITEM GET CHANGE ###', function() {
     .send({})
     .expect(201)
     .expect(function(res) {
-      expect(change).to.equal(100);
+      expect(change).to.equal(95);
     });
     done();
   });
@@ -52,10 +52,10 @@ describe('#### CURRENT STOCK ####', function() {
 
   beforeEach(function(done) {
     Product.insertMany([
-      {drink: 'Gatoraid', quantity: 7, cost: 4},
-      {drink: 'Dr.Pepper', quantity: 43, cost: 50},
-      {drink: 'Mr.Pib', quantity: 14, cost: 4},
-      {drink: 'Starbucks', quantity: 5, cost: 64}
+      {name: 'Gatoraid', quantity: 7, cost: 4},
+      {name: 'Dr.Pepper', quantity: 43, cost: 50},
+      {name: 'Mr.Pib', quantity: 14, cost: 4},
+      {name: 'Starbucks', quantity: 5, cost: 64}
     ]).then(done());
   });
 
@@ -68,10 +68,10 @@ describe('#### CURRENT STOCK ####', function() {
     .get('/api/product/drinks')
     .expect(200)
     .expect(function(res) {
-      expect(res.body[0].drink).to.equal('Gatoraid');
-      expect(res.body[1].drink).to.equal('Dr.Pepper');
-      expect(res.body[2].drink).to.equal('Mr.Pib');
-      expect(res.body[3].drink).to.equal('Starbucks');
+      expect(res.body[0].name).to.equal('Gatoraid');
+      expect(res.body[1].name).to.equal('Dr.Pepper');
+      expect(res.body[2].name).to.equal('Mr.Pib');
+      expect(res.body[3].name).to.equal('Starbucks');
     }).end(done);
   });
 });
@@ -86,7 +86,7 @@ describe('######## UPDATE PRODUCT #######', function() {
 
 
   it('Softreset product', function(done) {
-    const product = new Product().save().then(function(newProduct) {
+    var product = new Product().save().then(function(newProduct) {
       Product.count().then(function(ount) {
         expect(ount).to.equal(1);
         done();
@@ -95,8 +95,8 @@ describe('######## UPDATE PRODUCT #######', function() {
   });
 
   it('Update a Product', function(done) {
-    const product = new Product({drink: 'Mountain Dew', quantity: 4, cost: 65}).save().then(function(newProduct) {
-      expect(newProduct.drink).to.equal('Mountain Dew');
+    var product = new Product({name: 'Mountain Dew', quantity: 4, cost: 65}).save().then(function(newProduct) {
+      expect(newProduct.name).to.equal('Mountain Dew');
       expect(newProduct.quantity).to.equal(4);
       expect(newProduct.cost).to.equal(65);
       done();

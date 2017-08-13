@@ -38,8 +38,9 @@ app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
   var paid = 100;
   var message = "";
 
-  Product.findOne({drink: "Gatoraid"}).then(function(result) {
+  Product.findOne({}).then(function(result) {
     var total = bought * result.cost;
+    console.log(result);
 
 
     if (!result || result.quantity === 0){
@@ -54,9 +55,10 @@ app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
 
     } else {
       result.quantity -= bought;
+      console.log(result);
       result.save().then(function(newDrink) {
 
-        const newSupplier = new Supplier({drink: newDrink.drink, quantity: bought, totalCost: total}).save().then(function() {
+        const newSupplier = new Supplier({name: newDrink.drink, quantity: bought, totalCost: total}).save().then(function() {
 
 
           if (paid > total){
@@ -86,12 +88,12 @@ app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
 
 
 app.get("/api/suppliers/cash", function(req, res) {
-  Supplier.find({}).then(function(drinks) {
+  Supplier.find({}).then(function(supplierName) {
     // console.log(JSON.stringify(drinks, null, "\t"));
     var total = 0;
 
-    for(var i = 0; i < drinks.length; i++) {
-      total += drinks[i].totalCost;
+    for(var i = 0; i < supplierName.length; i++) {
+      total += supplierName[i].totalCost;
     }
 
     res.json({total: total});
@@ -118,7 +120,7 @@ app.post("/api/suppliers/drinks", function(req, res) {
 
 
 app.patch("/api/suppliers/drinks/:drinkId", function(req, res) {
-  Supplier.update({drink: req.params.drinkId}).then(function(drinks) {
+  Supplier.update({name: req.params.drinkId}).then(function(drinks) {
     // console.log(JSON.stringify(id, null, "\t"));
     res.status(200).json({});
   });

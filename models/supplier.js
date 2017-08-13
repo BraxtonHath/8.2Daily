@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const supplierSchema = new mongoose.Schema({
-  drink: String,
+  supplierName: String,
   quantity: Number,
   totalCost: Number,
   purchasedTime: {

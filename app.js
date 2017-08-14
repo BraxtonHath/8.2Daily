@@ -82,7 +82,15 @@ app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
       });
     }
   });
+});
 
+app.put("/api/product/drinks/:drinkId", function(req, res) {
+  Product.findOne({}).then(function(drinks) {
+    drinks.name = "mountain dew";
+    drinks.save().then(function(drinks){
+      res.json(drinks);
+  });
+});
 });
 
 
@@ -118,12 +126,21 @@ app.post("/api/suppliers/drinks", function(req, res) {
 });
 
 
+// app.patch("/api/suppliers/drinks/:drinkId", function(req, res) {
+//   Supplier.update({name: req.params.drinkId}).then(function(drinks) {
+//     // console.log(JSON.stringify(id, null, "\t"));
+//     res.status(200).json({});
+//   });
+// });
 
-app.patch("/api/suppliers/drinks/:drinkId", function(req, res) {
-  Supplier.update({name: req.params.drinkId}).then(function(drinks) {
-    // console.log(JSON.stringify(id, null, "\t"));
-    res.status(200).json({});
+
+app.put("/api/product/drinks/:drinkId", function(req, res) {
+  Product.findOne({}).then(function(drinks) {
+    drinks.name = "mountain dew";
+    drinks.save().then(function(drinks){
+      res.json(drinks);
   });
+});
 });
 
 

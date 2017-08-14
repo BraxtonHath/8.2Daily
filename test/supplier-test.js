@@ -11,62 +11,43 @@ const app = require('../app');
 
 
 
-describe('###### DRINKS STOCKED #######', function() {
+// describe('###### DRINKS STOCKED #######', function() {
+//
+//   beforeEach(function(done) {
+//     Supplier.insertMany([
+//       {supplierName: 'Gatoraid', quantity: 7, totalCost: 4},
+//       {supplierName: 'Dr.Pepper', quantity: 43, totalCost: 50},
+//       {supplierName: 'Mr.Pib', quantity: 14, totalCost: 4},
+//       {supplierName: 'Starbucks', quantity: 5, totalCost: 64}
+//     ]).then(done());
+//   });
+//
+//   afterEach(function(done) {
+//     Supplier.deleteMany({}).then(done());
+//   });
+//
+//   it('checks numbers ', function(done) {
+//   });
+// });
 
-  beforeEach(function(done) {
-    Supplier.insertMany([
-      {supplierName: 'Gatoraid', quantity: 7, totalCost: 4},
-      {supplierName: 'Dr.Pepper', quantity: 43, totalCost: 50},
-      {supplierName: 'Mr.Pib', quantity: 14, totalCost: 4},
-      {supplierName: 'Starbucks', quantity: 5, totalCost: 64}
-    ]).then(done());
-  });
+
+
+describe('###### UPDATE SUPPLIER ########', function() {
+
 
   afterEach(function(done) {
     Supplier.deleteMany({}).then(done());
   });
 
-  it('checks numbers ', function(done) {
-    var sampleItem = {supplierName: 'RedGatoraid', quantity: 7, totalCost: 4};
-    request(app)
-    .patch('/api/suppliers/drinks/' + sampleItem._id)
-    .send({})
-    .expect(200)
-    .expect(function(res) {
-      expect(sampleItem.supplierName).to.equal('RedGatoraid');
-      expect(sampleItem.quantity).to.equal(7);
-      expect(sampleItem.totalCost).to.equal(4);
-    }).end(done);
-  });
-});
-
-
-
-
-describe('####### TOTAL AMMOUNT OF MONEY #######', function() {
-
-  beforeEach(function(done) {
-    Supplier.insertMany([
-      {supplierName: 'Gatoraid', quantity: 7, totalCost: 4},
-      {supplierName: 'Dr.Pepper', quantity: 43, totalCost: 50},
-      {supplierName: 'Mr.Pib', quantity: 14, totalCost: 4},
-      {supplierName: 'Starbucks', quantity: 5, totalCost: 64}
-    ]).then(done());
+  it('Soft reset', function(done) {
+    const supplier = new Supplier().save().then(function(newSupplier) {
+      Supplier.count().then(function(count) {
+        expect(count).to.equal(1);
+        done();
+      });
+    });
   });
 
-  afterEach(function(done) {
-    Supplier.deleteMany({}).then(done());
-  });
-
-  it('total Function', function(done) {
-    request(app)
-    .get('/api/suppliers/cash')
-    .expect(200)
-    .expect(function(res) {
-      expect(res.body.total).to.equal(122);
-    }).end(done);
-  });
-});
 
 
 
@@ -103,7 +84,32 @@ describe('###### ADD A DRINK #####', function() {
 });
 
 
+describe('####### TOTAL AMMOUNT OF MONEY #######', function() {
 
+  beforeEach(function(done) {
+    Supplier.insertMany([
+      {supplierName: 'Gatoraid', quantity: 7, totalCost: 4},
+      {supplierName: 'Dr.Pepper', quantity: 43, totalCost: 50},
+      {supplierName: 'Mr.Pib', quantity: 14, totalCost: 4},
+      {supplierName: 'Starbucks', quantity: 5, totalCost: 64}
+    ]).then(done());
+  });
+
+  afterEach(function(done) {
+    Supplier.deleteMany({}).then(done());
+  });
+
+
+
+  it('total Function', function(done) {
+    request(app)
+    .get('/api/suppliers/cash')
+    .expect(200)
+    .expect(function(res) {
+      expect(res.body.total).to.equal(122);
+    }).end(done);
+  });
+});
 
 
 
@@ -142,28 +148,15 @@ describe('###### PURCHASES #####', function() {
 
 
 
-describe('###### UPDATE SUPPLIER ########', function() {
 
-
-  afterEach(function(done) {
-    Supplier.deleteMany({}).then(done());
-  });
-
-  it('Soft reset', function(done) {
-    const supplier = new Supplier().save().then(function(newSupplier) {
-      Supplier.count().then(function(count) {
-        expect(count).to.equal(1);
-        done();
-      });
-    });
-  });
-
-  it('Update a supplier Function', function(done) {
-    const supplier = new Supplier({supplierName: 'Gatoraid', quantity: 4, totalCost: 65}).save().then(function(newSupplier) {
-      expect(newSupplier.supplierName).to.equal('Gatoraid');
-      expect(newSupplier.quantity).to.equal(4);
-      expect(newSupplier.totalCost).to.equal(65);
-      done();
-    });
-  });
+  // it('Update a supplier Function', function(done) {
+  //   const supplier = new Supplier({supplierName: 'Gatoraid', quantity: 4, totalCost: 65}).save().then(function(newSupplier) {
+  //
+  //
+  //     expect(newSupplier.supplierName).to.equal('Gatoraid');
+  //     expect(newSupplier.quantity).to.equal(4);
+  //     expect(newSupplier.totalCost).to.equal(65);
+  //     done();
+  //   });
+  // });
 });

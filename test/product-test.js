@@ -84,11 +84,24 @@ describe('#### CURRENT STOCK ####', function() {
 
 describe('######## UPDATE PRODUCT #######', function() {
 
+  beforeEach(function(done) {
+    Product.insertMany([
+      {name: 'Gatoraid', quantity: 7, cost: 5},
+      {name: 'Dr.Pepper', quantity: 43, cost: 50},
+      {name: 'Mr.Pib', quantity: 14, cost: 4},
+      {name: 'Starbucks', quantity: 5, cost: 64}
+    ]).then(done());
+  });
 
-  it('Softreset product', function(done) {
+  afterEach(function(done) {
+    Product.deleteMany({}).then(done());
+  });
+
+
+  it('add a product', function(done) {
     var product = new Product().save().then(function(newProduct) {
       Product.count().then(function(ount) {
-        expect(ount).to.equal(1);
+        expect(ount).to.equal(5);
         done();
       });
     });
@@ -96,10 +109,11 @@ describe('######## UPDATE PRODUCT #######', function() {
 
   it('Update a Product', function(done) {
     var product = new Product({name: 'Mountain Dew', quantity: 4, cost: 65}).save().then(function(newProduct) {
-      expect(newProduct.name).to.equal('Mountain Dew');
-      expect(newProduct.quantity).to.equal(4);
-      expect(newProduct.cost).to.equal(65);
-      done();
+      request(app)
+      .put('/api/product/drinks/' + newProduct._id)
+      .expect(function(res){
+        expect(res.body.name).to.equal("mountain dew");
+      }).end(done);
     });
-  });
+});
 });

@@ -136,7 +136,7 @@ app.post("/api/suppliers/drinks", function(req, res) {
 
 app.put("/api/product/drinks/:drinkId", function(req, res) {
   Product.findOne({}).then(function(drinks) {
-    drinks.name = "mountain dew";
+    drinks.name = {$set : {name: req.params.name}};
     drinks.save().then(function(drinks){
       res.json(drinks);
   });

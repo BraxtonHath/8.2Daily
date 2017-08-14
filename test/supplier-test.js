@@ -11,24 +11,31 @@ const app = require('../app');
 
 
 
-// describe('###### DRINKS STOCKED #######', function() {
-//
-//   beforeEach(function(done) {
-//     Supplier.insertMany([
-//       {supplierName: 'Gatoraid', quantity: 7, totalCost: 4},
-//       {supplierName: 'Dr.Pepper', quantity: 43, totalCost: 50},
-//       {supplierName: 'Mr.Pib', quantity: 14, totalCost: 4},
-//       {supplierName: 'Starbucks', quantity: 5, totalCost: 64}
-//     ]).then(done());
-//   });
-//
-//   afterEach(function(done) {
-//     Supplier.deleteMany({}).then(done());
-//   });
-//
-//   it('checks numbers ', function(done) {
-//   });
-// });
+describe('basic model tests', function() {
+
+  beforeEach(function(done) {
+    Supplier.insertMany([
+      {supplierName: 'Gatoraid', quantity: 7, totalCost: 4},
+      {supplierName: 'Dr.Pepper', quantity: 43, totalCost: 50},
+      {supplierName: 'Mr.Pib', quantity: 14, totalCost: 4},
+      {supplierName: 'Starbucks', quantity: 5, totalCost: 64}
+    ]).then(done());
+  });
+
+  afterEach(function(done) {
+    Supplier.deleteMany({}).then(done());
+  });
+
+  it('test should clean up after itself', function(done) {
+    const supplier = new Supplier().save().then(function(newSupplier) {
+      Supplier.count().then(function(count){
+        expect(count).to.equal(5);
+      })
+      .then(done());
+
+    });
+  });
+});
 
 
 

@@ -111,6 +111,7 @@ describe('######## UPDATE PRODUCT #######', function() {
     var product = new Product({name: 'Mountain Dew', quantity: 4, cost: 65}).save().then(function(newProduct) {
       request(app)
       .put('/api/product/drinks/' + newProduct._id)
+      .send({name: "mountain dew"})
       .expect(function(res){
         expect(res.body.name).to.equal("mountain dew");
       }).end(done);

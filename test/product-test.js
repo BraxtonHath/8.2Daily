@@ -2,8 +2,34 @@ const expect = require('chai').expect;
 const request = require('supertest');
 const app = require('../app');
 const Product = require('../models/product');
+const Supplier = require('../models/supplier');
 
 
+describe('basic model tests', function() {
+
+  beforeEach(function(done) {
+    Supplier.insertMany([
+      {supplierName: 'Gatoraid', quantity: 7, totalCost: 4},
+      {supplierName: 'Dr.Pepper', quantity: 43, totalCost: 50},
+      {supplierName: 'Mr.Pib', quantity: 14, totalCost: 4},
+      {supplierName: 'Starbucks', quantity: 5, totalCost: 64}
+    ]).then(done());
+  });
+
+  afterEach(function(done) {
+    Supplier.deleteMany({}).then(done());
+  });
+
+  it('test should clean up after itself', function(done) {
+    const supplier = new Supplier().save().then(function(newSupplier) {
+      Supplier.count().then(function(count){
+        expect(count).to.equal(5);
+      })
+      .then(done());
+
+    });
+  });
+});
 
 
 describe('### BUY ITEM GET CHANGE ###', function() {
@@ -48,6 +74,8 @@ describe('### BUY ITEM GET CHANGE ###', function() {
 
 
 
+
+
 describe('#### CURRENT STOCK ####', function() {
 
   beforeEach(function(done) {
@@ -75,6 +103,7 @@ describe('#### CURRENT STOCK ####', function() {
     }).end(done);
   });
 });
+
 
 
 
@@ -111,10 +140,40 @@ describe('######## UPDATE PRODUCT #######', function() {
     var product = new Product({name: 'Mountain Dew', quantity: 4, cost: 65}).save().then(function(newProduct) {
       request(app)
       .put('/api/product/drinks/' + newProduct._id)
-      .send({name: "mountain dew"})
+      .send({name: "mountain dew", quantity: 3, cost: 10})
       .expect(function(res){
+        console.log(newProduct._id);
         expect(res.body.name).to.equal("mountain dew");
+        expect(res.body.cost).to.equal(10);
+        expect(res.body.quantity).to.equal(3);
+
       }).end(done);
     });
+  });
 });
-});
+
+// describe('basic model tests', function() {
+//
+//   beforeEach(function(done) {
+//     Product.insertMany([
+//       {name: 'Gatoraid', quantity: 7, totalCost: 4},
+//       {name: 'Dr.Pepper', quantity: 43, totalCost: 50},
+//       {name: 'Mr.Pib', quantity: 14, totalCost: 4},
+//       {name: 'Starbucks', quantity: 5, totalCost: 64}
+//     ]).then(done());
+//   });
+//
+//   afterEach(function(done) {
+//     Product.deleteMany({}).then(done());
+//   });
+//
+//   it('test should clean up after itself', function(done) {
+//     const supplier = new Supplier().save().then(function(newSupplier) {
+//       Product.count().then(function(count){
+//         expect(count).to.equal(4);
+//       })
+//       .then(done());
+//
+//     });
+//   });
+// });

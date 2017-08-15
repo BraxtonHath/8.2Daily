@@ -40,7 +40,7 @@ app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
 
   Product.findOne({}).then(function(result) {
     var total = bought * result.cost;
-    console.log(result);
+    console.log(result + " before being bought");
 
 
     if (!result || result.quantity === 0){
@@ -55,10 +55,10 @@ app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
 
     } else {
       result.quantity -= bought;
-      console.log(result);
+      console.log(result + " after being bought");
       result.save().then(function(newDrink) {
 
-        const newSupplier = new Supplier({name: newDrink.drink, quantity: bought, totalCost: total}).save().then(function() {
+        const newProduct = new Product({name: newDrink.drink, quantity: bought, totalCost: total}).save().then(function() {
 
 
           if (paid > total){
@@ -84,14 +84,6 @@ app.post("/api/Product/drinks/:drinkId/purchases", function(req, res) {
   });
 });
 
-app.put("/api/product/drinks/:drinkId", function(req, res) {
-  Product.findOne({}).then(function(drinks) {
-    drinks.name = "mountain dew";
-    drinks.save().then(function(drinks){
-      res.json(drinks);
-  });
-});
-});
 
 
 
@@ -135,8 +127,10 @@ app.post("/api/suppliers/drinks", function(req, res) {
 
 
 app.put("/api/product/drinks/:drinkId", function(req, res) {
-  Product.findOne({}).then(function(drinks) {
-    drinks.name = {$set : {name: req.params.name}};
+  Product.findOne({_id: req.params.drinkId}).then(function(drinks) {
+    drinks.name = req.body.name;
+    drinks.quantity = req.body.quantity;
+    drinks.cost = req.body.cost;
     drinks.save().then(function(drinks){
       res.json(drinks);
   });
